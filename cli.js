@@ -2,10 +2,14 @@
 'use strict';
 
 const meow = require('meow');
+const updateNotifier = require('update-notifier');
 const importLazy = require('import-lazy')(require);
+const pkg = require('./package');
 
 const settings = importLazy('./src/settings');
 const timeline = importLazy('./src/timeline');
+
+updateNotifier({pkg}).notify();
 
 const cli = meow(`
 Usage
