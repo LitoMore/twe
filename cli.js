@@ -9,7 +9,12 @@ const timeline = importLazy('./src/timeline');
 
 const cli = meow(`
 	Usage
-		$ twe
+		$ twe								Fetch home-timeline
+		$ twe h|home				Fetch home-timeline
+		$ twe m|mentions		Fetch mentions-timeline
+		$ twe setup					Setup tokens
+		$ twe colors				Config color themes
+		$ twe <status> ...	Post status
 `);
 
 const [command] = cli.input;
