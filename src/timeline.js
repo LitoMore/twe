@@ -14,14 +14,63 @@ const setup = conf.get('setup') || defaultSettings.setup;
 const colors = conf.get('colors') || defaultSettings.colors;
 const t = new T(setup);
 
+const generateStatusLine = (text, entities) => {
+	const typeDict = {
+		hashtags: 'tags',
+		symbols: 'symbols',
+		/* eslint-disable camelcase */
+		user_mentions: 'ats',
+		urls: 'link',
+		media: 'link'
+	};
+	let statusText = [];
+	Object.keys(entities).forEach(key => {
+		const type = typeDict[key];
+		entities[key].forEach(item => {
+			const [from, to] = item.indices;
+			const subString = text.substr(from, to - from);
+			statusText.push({type, from, to, text: subString});
+		});
+	});
+	if (statusText.length === 0) {
+		return chalkPipe(colors.text)(text);
+	}
+	statusText.sort((a, b) => a.from - b.from);
+	const tempStatusText = statusText.slice();
+	tempStatusText.forEach((item, index) => {
+		const {from, to} = item;
+		if (from > 0 && index === 0) {
+			const subString = text.substr(0, from);
+			statusText.push({type: 'text', from: 0, to: from, text: subString});
+		}
+		if (index < tempStatusText.length - 1) {
+			const next = tempStatusText[index + 1];
+			const subString = text.substr(to, next.from - to);
+			statusText.push({type: 'text', from: to, to: next.from, text: subString});
+		} else if (to < text.length - 1) {
+			const thisTo = text.length - 1;
+			const subString = text.substr(to, thisTo - to);
+			statusText.push({type: 'text', from: to, to: thisTo, text: subString});
+		}
+	});
+	statusText.sort((a, b) => a.from - b.from);
+	statusText = statusText.map(item => ({type: item.type, text: item.text}));
+	const line = statusText.map(item => {
+		const paint = chalkPipe(colors[item.type]);
+		return paint(item.text);
+	}).join('');
+	return line;
+};
+
 const renderTimeline = tl => {
 	tl.forEach(status => {
-		const {user, text} = status;
+		const {user, text, entities} = status;
+		const line = generateStatusLine(text, entities);
 		const statusText = chalkPipe(colors.text)('[') +
 			chalkPipe(colors.name)(user.name) +
 			chalkPipe(colors.text)(']') +
 			chalkPipe(colors.text)(' ') +
-			chalkPipe(colors.text)(text);
+			chalkPipe(colors.text)(line);
 		console.log(statusText);
 	});
 };
