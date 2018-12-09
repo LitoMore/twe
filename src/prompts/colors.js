@@ -31,5 +31,11 @@ module.exports = config => ([
 		message: 'Link color',
 		default: config.link,
 		transformer
+	}, {
+		type: 'input',
+		name: 'tags',
+		message: 'Tags color',
+		default: config.tags,
+		transformer
 	}
 ]);

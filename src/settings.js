@@ -15,10 +15,11 @@ const defaultSettings = {
 		accessTokenSecret: ''
 	},
 	colors: {
-		text: 'reset',
-		name: 'green',
-		ats: 'blue',
-		link: 'blue'
+		text: '#cccccc',
+		name: 'dim.green',
+		ats: 'cyan',
+		link: 'dim.cyan.underline',
+		tags: 'orange.bold'
 	}
 };
 

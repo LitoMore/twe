@@ -8,6 +8,7 @@ const importLazy = require('import-lazy')(require);
 const {defaultSettings} = require('./settings');
 
 const changeCase = importLazy('change-case');
+const stringz = importLazy('stringz');
 
 const conf = new Conf();
 const setup = conf.get('setup') || defaultSettings.setup;
@@ -28,7 +29,7 @@ const generateStatusLine = (text, entities) => {
 		const type = typeDict[key];
 		entities[key].forEach(item => {
 			const [from, to] = item.indices;
-			const subString = text.substr(from, to - from);
+			const subString = stringz.substr(text, from, to - from);
 			statusText.push({type, from, to, text: subString});
 		});
 	});
@@ -40,16 +41,16 @@ const generateStatusLine = (text, entities) => {
 	tempStatusText.forEach((item, index) => {
 		const {from, to} = item;
 		if (from > 0 && index === 0) {
-			const subString = text.substr(0, from);
+			const subString = stringz.substr(text, 0, from);
 			statusText.push({type: 'text', from: 0, to: from, text: subString});
 		}
 		if (index < tempStatusText.length - 1) {
 			const next = tempStatusText[index + 1];
-			const subString = text.substr(to, next.from - to);
+			const subString = stringz.substr(text, to, next.from - to);
 			statusText.push({type: 'text', from: to, to: next.from, text: subString});
 		} else if (to < text.length - 1) {
 			const thisTo = text.length - 1;
-			const subString = text.substr(to, thisTo - to);
+			const subString = stringz.substr(text, to, thisTo - to);
 			statusText.push({type: 'text', from: to, to: thisTo, text: subString});
 		}
 	});
