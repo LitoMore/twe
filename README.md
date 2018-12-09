@@ -29,12 +29,12 @@ $ npm i -g twe
 
 ```
 Usage
-	$ twe								Fetch home-timeline
-	$ twe h|home				Fetch home-timeline
-	$ twe m|mentions		Fetch mentions-timeline
-	$ twe setup					Setup tokens
-	$ twe colors				Config color themes
-	$ twe <status> ...	Post status
+  $ twe               Fetch home-timeline
+  $ twe h|home        Fetch home-timeline
+  $ twe m|mentions    Fetch mentions-timeline
+  $ twe setup         Setup tokens
+  $ twe colors        Config color themes
+  $ twe <status> ...  Post status
 ```
 
 ## Related
