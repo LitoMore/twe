@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 'use strict';
 
 const T = require('twii');
@@ -19,10 +20,9 @@ const renderTimeline = tl => {
 		const statusText = chalkPipe(colors.text)('[') +
 			chalkPipe(colors.name)(user.name) +
 			chalkPipe(colors.text)(']') +
-			' ' +
-			text;
+			chalkPipe(colors.text)(' ') +
+			chalkPipe(colors.text)(text);
 		console.log(statusText);
-		// Console.log(status.entities);
 	});
 };
 
@@ -35,31 +35,37 @@ const convertParams = params => {
 };
 
 const postStatus = async (status, params) => {
-	await t.post('statuses/update', {status, ...params});
+	try {
+		await t.post('statuses/update', {status, ...params});
+	} catch (error) {
+		console.log(JSON.parse(error.body));
+		process.exit(1);
+	}
+};
+
+const fetchTimeline = async (uri, params) => {
+	if (params)	{
+		params = convertParams(params);
+	}
+	try {
+		const {body: tl} = await t.get(uri, params);
+		renderTimeline(tl);
+	} catch (error) {
+		console.log(error.body);
+		process.exit(1);
+	}
 };
 
 const homeTimeline = async params => {
-	if (params)	{
-		params = convertParams(params);
-	}
-	const {body: tl} = await t.get('statuses/home_timeline', params);
-	renderTimeline(tl);
+	fetchTimeline('statuses/home_timeline', params);
 };
 
 const userTimeline = async params => {
-	if (params)	{
-		params = convertParams(params);
-	}
-	const {body: tl} = await t.get('statuses/user_timeline', params);
-	renderTimeline(tl);
+	fetchTimeline('statuses/user_timeline', params);
 };
 
 const mentionsTimeline = async params => {
-	if (params) {
-		params = convertParams(params);
-	}
-	const {body: tl} = await t.get('statuses/mentions_timeline', params);
-	renderTimeline(tl);
+	fetchTimeline('statuses/mentions_timeline', params);
 };
 
 module.exports = {
