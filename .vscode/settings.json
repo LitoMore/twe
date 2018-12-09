@@ -1,0 +1,8 @@
+{
+  "xo.enable": true,
+  "xo.format.enable": true,
+  "editor.formatOnSave": true,
+  "files.insertFinalNewline": true,
+  "editor.insertSpaces": false,
+  "editor.tabSize": 2
+}
