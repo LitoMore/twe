@@ -8,7 +8,7 @@ CLI for Twitter
 - [x] Fetch mentions-timeline
 - [x] Fetch user-timeline
 - [x] Post statuses
-- [ ] Customizable color themes (WIP)
+- [x] Customizable color themes (WIP)
 - [ ] Multiple account login (WIP)
 - [ ] Post media (WIP)
 - [ ] Post photo from clipboard (WIP)
