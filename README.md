@@ -8,6 +8,8 @@
 
 CLI for Twitter
 
+<div align="center"><img src="https://raw.githubusercontent.com/LitoMore/twe/master/screenshot.png" alt="Twe" /></div>
+
 ## Features
 
 - [x] Fetch home-timeline
