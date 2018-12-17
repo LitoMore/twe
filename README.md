@@ -16,7 +16,7 @@ CLI for Twitter
 - [x] Fetch mentions-timeline
 - [x] Fetch user-timeline
 - [x] Post statuses
-- [x] Customizable color themes (WIP)
+- [x] Customizable color themes
 - [ ] Multiple account login (WIP)
 - [ ] Post media (WIP)
 - [ ] Post photo from clipboard (WIP)
@@ -43,6 +43,7 @@ Usage
   $ twe setup         Setup tokens
   $ twe colors        Config color themes
   $ twe <status> ...  Post status
+  $ twe --count=10    Fetch with parameters
 ```
 
 ## Related
