@@ -46,6 +46,12 @@ Usage
   $ twe --count=10    Fetch with parameters
 ```
 
+### Color scheme
+
+Use `twe colors` to customize your color scheme.
+
+<img width="50%" height="50%" src="https://raw.githubusercontent.com/LitoMore/twe/master/media/twe-colors.gif" alt="twe-colors" />
+
 ## Related
 
 - [twii](https://github.com/LitoMore/twii) - API for this module
