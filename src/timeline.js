@@ -21,6 +21,7 @@ const generateStatusLine = (text, entities) => {
 		symbols: 'symbols',
 		/* eslint-disable camelcase */
 		user_mentions: 'ats',
+		/* eslint-enable camelcase */
 		urls: 'link',
 		media: 'link'
 	};
@@ -36,6 +37,7 @@ const generateStatusLine = (text, entities) => {
 	if (statusText.length === 0) {
 		return chalkPipe(colors.text)(text);
 	}
+
 	statusText.sort((a, b) => a.from - b.from);
 	const tempStatusText = statusText.slice();
 	tempStatusText.forEach((item, index) => {
@@ -44,6 +46,7 @@ const generateStatusLine = (text, entities) => {
 			const subString = stringz.substr(text, 0, from);
 			statusText.push({type: 'text', from: 0, to: from, text: subString});
 		}
+
 		if (index < tempStatusText.length - 1) {
 			const next = tempStatusText[index + 1];
 			const subString = stringz.substr(text, to, next.from - to);
@@ -97,6 +100,7 @@ const fetchTimeline = async (uri, params) => {
 	if (params)	{
 		params = convertParams(params);
 	}
+
 	try {
 		const {body: tl} = await t.get(uri, params);
 		renderTimeline(tl);
