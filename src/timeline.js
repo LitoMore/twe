@@ -9,11 +9,16 @@ const {defaultSettings} = require('./settings');
 
 const changeCase = importLazy('change-case');
 const stringz = importLazy('stringz');
+const ora = importLazy('ora');
 
 const conf = new Conf();
 const setup = conf.get('setup') || defaultSettings.setup;
 const colors = conf.get('colors') || defaultSettings.colors;
 const t = new T(setup);
+
+const spin = text => {
+	process.spinner = ora(text).start();
+};
 
 const generateStatusLine = (text, entities) => {
 	const typeDict = {
@@ -88,24 +93,30 @@ const convertParams = params => {
 };
 
 const postStatus = async (status, params) => {
+	spin('Sending');
+
 	try {
 		await t.post('statuses/update', {status, ...params});
+		process.spinner.succeed('Sent!');
 	} catch (error) {
-		console.log(JSON.parse(error.body));
+		process.spinner.fail(error.body);
 		process.exit(1);
 	}
 };
 
 const fetchTimeline = async (uri, params) => {
+	spin('Fetching');
+
 	if (params)	{
 		params = convertParams(params);
 	}
 
 	try {
 		const {body: tl} = await t.get(uri, params);
+		process.spinner.stop();
 		renderTimeline(tl);
 	} catch (error) {
-		console.log(error.body);
+		process.spinner(error.body);
 		process.exit(1);
 	}
 };
