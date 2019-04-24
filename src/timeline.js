@@ -10,6 +10,7 @@ const {defaultSettings} = require('./settings');
 const changeCase = importLazy('change-case');
 const stringz = importLazy('stringz');
 const ora = importLazy('ora');
+const tweRepl = importLazy('./repl');
 
 const conf = new Conf();
 const setup = conf.get('setup') || defaultSettings.setup;
@@ -133,9 +134,38 @@ const mentionsTimeline = async params => {
 	fetchTimeline('statuses/mentions_timeline', params);
 };
 
+const renderResponse = (body, {repl}) => {
+	if (repl) {
+		tweRepl.showInRepl(body);
+	} else {
+		console.log(body);
+	}
+};
+
+const doRequest = {
+	get: async (uri, {repl, ...params}) => {
+		try {
+			const {body} = await t.get(uri, params);
+			renderResponse(body, {repl});
+		} catch (error) {
+			renderResponse(error, {repl});
+		}
+	},
+
+	post: async (uri, {repl, ...params}) => {
+		try {
+			const {body} = await t.post('statuses/update', {...params});
+			renderResponse(body, {repl});
+		} catch (error) {
+			renderResponse(error, {repl});
+		}
+	}
+};
+
 module.exports = {
 	postStatus,
 	homeTimeline,
 	userTimeline,
-	mentionsTimeline
+	mentionsTimeline,
+	doRequest
 };

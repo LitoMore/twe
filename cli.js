@@ -53,6 +53,13 @@ switch (command) {
 		timeline.mentionsTimeline(cli.flags);
 		break;
 
+	case 'get':
+	case 'post': {
+		const [, uri] = cli.input;
+		timeline.doRequest[command](uri, cli.flags || {});
+		break;
+	}
+
 	// Post status
 	default: {
 		const status = cli.input.join(' ');

@@ -52,6 +52,24 @@ Use `twe colors` to customize your color scheme.
 
 <img width="50%" height="50%" src="https://raw.githubusercontent.com/LitoMore/twe/master/media/twe-colors.gif" alt="twe-colors" />
 
+### Customizable GET/POST Request
+
+Use `twe get` or `twe post` to create a GET/POST request:
+
+```bash
+$ twe get statuses/home_timeline --include-rts=false
+$ twe post statuses/update --status=hi
+```
+
+You could use `--repl` option to inspect the result in [REPL](https://nodejs.org/dist/latest/docs/api/repl.html):
+
+```bash
+$ twe get users/show --id=litomore --repl
+
+> result.name
+#=> 'LitoMore' 
+```
+
 ## Related
 
 - [twii](https://github.com/LitoMore/twii) - API for this module
