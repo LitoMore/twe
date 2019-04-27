@@ -27,7 +27,7 @@
 		"chalk-pipe": "^2.0.0",
 		"change-case": "^3.1.0",
 		"conf": "^3.0.0",
-		"import-lazy": "^3.1.0",
+		"import-lazy": "^4.0.0",
 		"inquirer": "^6.3.1",
 		"meow": "^5.0.0",
 		"ora": "^3.4.0",
