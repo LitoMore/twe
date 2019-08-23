@@ -28,7 +28,7 @@
 		"change-case": "^3.1.0",
 		"conf": "^3.0.0",
 		"import-lazy": "^4.0.0",
-		"inquirer": "^6.3.1",
+		"inquirer": "^7.0.0",
 		"meow": "^5.0.0",
 		"ora": "^3.4.0",
 		"stringz": "^2.0.0",
