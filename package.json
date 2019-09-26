@@ -37,5 +37,10 @@
 	},
 	"devDependencies": {
 		"xo": "^0.25.3"
+	},
+	"xo": {
+		"rules": {
+			"unicorn/prefer-string-slice": 0
+		}
 	}
 }
