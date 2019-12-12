@@ -33,7 +33,7 @@
 		"ora": "^4.0.0",
 		"stringz": "^2.0.0",
 		"twii": "^0.1.1",
-		"update-notifier": "^3.0.0"
+		"update-notifier": "^4.0.0"
 	},
 	"devDependencies": {
 		"xo": "^0.25.3"
