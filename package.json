@@ -20,28 +20,20 @@
 	"bugs": {
 		"url": "https://github.com/LitoMore/twe/issues"
 	},
-	"engines": {
-		"node": ">=8"
-	},
 	"homepage": "https://github.com/LitoMore/twe#readme",
 	"dependencies": {
-		"chalk-pipe": "^3.0.0",
-		"change-case": "^3.1.0",
-		"conf": "^3.0.0",
-		"import-lazy": "^4.0.0",
-		"inquirer": "^7.0.0",
-		"meow": "^5.0.0",
-		"ora": "^4.0.0",
-		"stringz": "^2.0.0",
-		"twii": "^0.1.1",
-		"update-notifier": "^3.0.0"
+		"chalk-pipe": "^5.1.1",
+		"change-case": "^4.1.2",
+		"conf": "^10.2.0",
+		"inquirer": "^9.1.2",
+		"meow": "^10.1.4",
+		"ora": "^6.1.2",
+		"twii": "^0.1.1"
 	},
 	"devDependencies": {
-		"xo": "^0.25.3"
+		"xo": "^0.52.3"
 	},
 	"xo": {
-		"rules": {
-			"unicorn/prefer-string-slice": 0
-		}
+		"prettier": true
 	}
 }

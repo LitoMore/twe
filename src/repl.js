@@ -1,12 +1,6 @@
-'use strict';
+import repl from 'node:repl';
 
-const repl = require('repl');
-
-const showInRepl = (params = {}) => {
+export const showInRepl = (parameters = {}) => {
 	const r = repl.start('> ');
-	r.context.result = params;
-};
-
-module.exports = {
-	showInRepl
+	r.context.result = parameters;
 };

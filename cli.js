@@ -1,17 +1,10 @@
 #!/usr/bin/env node
-'use strict';
+import meow from 'meow';
+import * as settings from './src/settings.js';
+import * as timeline from './src/timeline.js';
 
-const meow = require('meow');
-const updateNotifier = require('update-notifier');
-const importLazy = require('import-lazy')(require);
-const pkg = require('./package');
-
-const settings = importLazy('./src/settings');
-const timeline = importLazy('./src/timeline');
-
-updateNotifier({pkg}).notify();
-
-const cli = meow(`
+const cli = meow(
+	`
 Usage
   $ twe               Fetch home-timeline
   $ twe h|home        Fetch home-timeline
@@ -19,7 +12,9 @@ Usage
   $ twe setup         Setup tokens
   $ twe colors        Config color themes
   $ twe <status> ...  Post status
-`);
+`,
+	{importMeta: import.meta},
+);
 
 const [command] = cli.input;
 

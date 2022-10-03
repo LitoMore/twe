@@ -1,23 +1,19 @@
 #!/usr/bin/env node
-'use strict';
-
-const T = require('twii');
-const Conf = require('conf');
-const chalkPipe = require('chalk-pipe');
-const importLazy = require('import-lazy')(require);
-const {defaultSettings} = require('./settings');
-
-const changeCase = importLazy('change-case');
-const stringz = importLazy('stringz');
-const ora = importLazy('ora');
-const tweRepl = importLazy('./repl');
+import process from 'node:process';
+import T from 'twii';
+import Conf from 'conf';
+import chalkPipe from 'chalk-pipe';
+import changeCase from 'change-case';
+import ora from 'ora';
+import {defaultSettings} from './settings.js';
+import {showInRepl} from './repl.js';
 
 const conf = new Conf();
 const setup = conf.get('setup') || defaultSettings.setup;
 const colors = conf.get('colors') || defaultSettings.colors;
 const t = new T(setup);
 
-const spin = text => {
+const spin = (text) => {
 	process.spinner = ora(text).start();
 };
 
@@ -29,75 +25,81 @@ const generateStatusLine = (text, entities) => {
 		user_mentions: 'ats',
 		/* eslint-enable camelcase */
 		urls: 'link',
-		media: 'link'
+		media: 'link',
 	};
 	let statusText = [];
-	Object.keys(entities).forEach(key => {
+	for (const key of Object.keys(entities)) {
 		const type = typeDict[key];
-		entities[key].forEach(item => {
+		for (const item of entities[key]) {
 			const [from, to] = item.indices;
-			const subString = stringz.substr(text, from, to - from);
+			const subString = text.slcie(from, to - from);
 			statusText.push({type, from, to, text: subString});
-		});
-	});
+		}
+	}
+
 	if (statusText.length === 0) {
 		return chalkPipe(colors.text)(text);
 	}
 
 	statusText.sort((a, b) => a.from - b.from);
-	const tempStatusText = statusText.slice();
-	tempStatusText.forEach((item, index) => {
+	const temporaryStatusText = [...statusText];
+	for (const [index, item] of temporaryStatusText.entries()) {
 		const {from, to} = item;
 		if (from > 0 && index === 0) {
-			const subString = stringz.substr(text, 0, from);
+			const subString = text.slice(0, from);
 			statusText.push({type: 'text', from: 0, to: from, text: subString});
 		}
 
-		if (index < tempStatusText.length - 1) {
-			const next = tempStatusText[index + 1];
-			const subString = stringz.substr(text, to, next.from - to);
+		if (index < temporaryStatusText.length - 1) {
+			const next = temporaryStatusText[index + 1];
+			const subString = text.slice(to, next.from - to);
 			statusText.push({type: 'text', from: to, to: next.from, text: subString});
 		} else if (to < text.length - 1) {
 			const thisTo = text.length - 1;
-			const subString = stringz.substr(text, to, thisTo - to);
+			const subString = text.slice(to, thisTo - to);
 			statusText.push({type: 'text', from: to, to: thisTo, text: subString});
 		}
-	});
+	}
+
 	statusText.sort((a, b) => a.from - b.from);
-	statusText = statusText.map(item => ({type: item.type, text: item.text}));
-	const line = statusText.map(item => {
-		const paint = chalkPipe(colors[item.type]);
-		return paint(item.text);
-	}).join('');
+	statusText = statusText.map((item) => ({type: item.type, text: item.text}));
+	const line = statusText
+		.map((item) => {
+			const paint = chalkPipe(colors[item.type]);
+			return paint(item.text);
+		})
+		.join('');
 	return line;
 };
 
-const renderTimeline = tl => {
-	tl.forEach(status => {
+const renderTimeline = (tl) => {
+	for (const status of tl) {
 		const {user, text, entities} = status;
 		const line = generateStatusLine(text, entities);
-		const statusText = chalkPipe(colors.text)('[') +
+		const statusText =
+			chalkPipe(colors.text)('[') +
 			chalkPipe(colors.name)(user.name) +
 			chalkPipe(colors.text)(']') +
 			chalkPipe(colors.text)(' ') +
 			chalkPipe(colors.text)(line);
 		console.log(statusText);
-	});
+	}
 };
 
-const convertParams = params => {
-	const snakeCaseParams = {};
-	Object.keys(params).forEach(key => {
-		snakeCaseParams[changeCase.snakeCase(key)] = params[key];
-	});
-	return snakeCaseParams;
+const convertParameters = (parameters) => {
+	const snakeCaseParameters = {};
+	for (const key of Object.keys(parameters)) {
+		snakeCaseParameters[changeCase.snakeCase(key)] = parameters[key];
+	}
+
+	return snakeCaseParameters;
 };
 
-const postStatus = async (status, params) => {
+export const postStatus = async (status, parameters) => {
 	spin('Sending');
 
 	try {
-		await t.post('statuses/update', {status, ...params});
+		await t.post('statuses/update', {status, ...parameters});
 		process.spinner.succeed('Sent!');
 	} catch (error) {
 		process.spinner.fail(error.body);
@@ -105,15 +107,15 @@ const postStatus = async (status, params) => {
 	}
 };
 
-const fetchTimeline = async (uri, params) => {
+const fetchTimeline = async (uri, parameters) => {
 	spin('Fetching');
 
-	if (params)	{
-		params = convertParams(params);
+	if (parameters) {
+		parameters = convertParameters(parameters);
 	}
 
 	try {
-		const {body: tl} = await t.get(uri, params);
+		const {body: tl} = await t.get(uri, parameters);
 		process.spinner.stop();
 		renderTimeline(tl);
 	} catch (error) {
@@ -122,50 +124,42 @@ const fetchTimeline = async (uri, params) => {
 	}
 };
 
-const homeTimeline = async params => {
-	fetchTimeline('statuses/home_timeline', params);
+export const homeTimeline = async (parameters) => {
+	fetchTimeline('statuses/home_timeline', parameters);
 };
 
-const userTimeline = async params => {
-	fetchTimeline('statuses/user_timeline', params);
+export const userTimeline = async (parameters) => {
+	fetchTimeline('statuses/user_timeline', parameters);
 };
 
-const mentionsTimeline = async params => {
-	fetchTimeline('statuses/mentions_timeline', params);
+export const mentionsTimeline = async (parameters) => {
+	fetchTimeline('statuses/mentions_timeline', parameters);
 };
 
 const renderResponse = (body, {repl}) => {
 	if (repl) {
-		tweRepl.showInRepl(body);
+		showInRepl(body);
 	} else {
 		console.log(body);
 	}
 };
 
-const doRequest = {
-	get: async (uri, {repl, ...params}) => {
+export const doRequest = {
+	async get(uri, {repl, ...parameters}) {
 		try {
-			const {body} = await t.get(uri, params);
+			const {body} = await t.get(uri, parameters);
 			renderResponse(body, {repl});
 		} catch (error) {
 			renderResponse(error, {repl});
 		}
 	},
 
-	post: async (uri, {repl, ...params}) => {
+	async post(uri, {repl, ...parameters}) {
 		try {
-			const {body} = await t.post('statuses/update', {...params});
+			const {body} = await t.post('statuses/update', {...parameters});
 			renderResponse(body, {repl});
 		} catch (error) {
 			renderResponse(error, {repl});
 		}
-	}
-};
-
-module.exports = {
-	postStatus,
-	homeTimeline,
-	userTimeline,
-	mentionsTimeline,
-	doRequest
+	},
 };

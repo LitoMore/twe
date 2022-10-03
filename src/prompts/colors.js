@@ -1,41 +1,45 @@
-'use strict';
+import chalkPipe from 'chalk-pipe';
 
-const chalkPipe = require('chalk-pipe');
-
-const transformer = color => {
+const transformer = (color) => {
 	return chalkPipe(color)(color);
 };
 
-module.exports = config => ([
+const colroPrompt = (config) => [
 	{
 		type: 'input',
 		name: 'text',
 		message: 'Text color',
 		default: config.text,
-		transformer
-	}, {
+		transformer,
+	},
+	{
 		type: 'input',
 		name: 'name',
 		message: 'Name color',
 		default: config.name,
-		transformer
-	}, {
+		transformer,
+	},
+	{
 		type: 'input',
 		name: 'ats',
 		message: 'ATs color',
 		default: config.ats,
-		transformer
-	}, {
+		transformer,
+	},
+	{
 		type: 'input',
 		name: 'link',
 		message: 'Link color',
 		default: config.link,
-		transformer
-	}, {
+		transformer,
+	},
+	{
 		type: 'input',
 		name: 'tags',
 		message: 'Tags color',
 		default: config.tags,
-		transformer
-	}
-]);
+		transformer,
+	},
+];
+
+export default colroPrompt;
