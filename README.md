@@ -1,7 +1,5 @@
 # Twe
 
-[![](https://badges.greenkeeper.io/LitoMore/twe.svg)](https://greenkeeper.io/)
-[![](https://img.shields.io/travis/LitoMore/twe/master.svg)](https://travis-ci.org/LitoMore/twe)
 [![](https://img.shields.io/npm/v/twe.svg)](https://www.npmjs.com/package/twe)
 [![](https://img.shields.io/npm/l/twe.svg)](https://github.com/LitoMore/twe/blob/master/LICENSE)
 [![](https://img.shields.io/badge/code_style-XO-5ed9c7.svg)](https://github.com/xojs/xo)
