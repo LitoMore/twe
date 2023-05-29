@@ -4,7 +4,7 @@ import T from 'twii';
 import Conf from 'conf';
 import chalkPipe from 'chalk-pipe';
 import changeCase from 'change-case';
-import ora from 'ora';
+import * as spinner from './spinner.js';
 import {defaultSettings} from './settings.js';
 import {showInRepl} from './repl.js';
 
@@ -12,10 +12,6 @@ const conf = new Conf();
 const setup = conf.get('setup') || defaultSettings.setup;
 const colors = conf.get('colors') || defaultSettings.colors;
 const t = new T(setup);
-
-const spin = (text) => {
-	process.spinner = ora(text).start();
-};
 
 const generateStatusLine = (text, entities) => {
 	const typeDict = {
@@ -32,7 +28,7 @@ const generateStatusLine = (text, entities) => {
 		const type = typeDict[key];
 		for (const item of entities[key]) {
 			const [from, to] = item.indices;
-			const subString = text.slcie(from, to - from);
+			const subString = text.slice(from, to - from);
 			statusText.push({type, from, to, text: subString});
 		}
 	}
@@ -96,19 +92,19 @@ const convertParameters = (parameters) => {
 };
 
 export const postStatus = async (status, parameters) => {
-	spin('Sending');
+	spinner.start('Sending');
 
 	try {
 		await t.post('statuses/update', {status, ...parameters});
-		process.spinner.succeed('Sent!');
+		spinner.succeed('Sent!');
 	} catch (error) {
-		process.spinner.fail(error.body);
+		spinner.fail(JSON.stringify(error.body?.errors));
 		process.exit(1);
 	}
 };
 
 const fetchTimeline = async (uri, parameters) => {
-	spin('Fetching');
+	spinner.start('Fetching');
 
 	if (parameters) {
 		parameters = convertParameters(parameters);
@@ -116,10 +112,10 @@ const fetchTimeline = async (uri, parameters) => {
 
 	try {
 		const {body: tl} = await t.get(uri, parameters);
-		process.spinner.stop();
+		spinner.stop();
 		renderTimeline(tl);
 	} catch (error) {
-		process.spinner(error.body);
+		spinner.fail(JSON.stringify(error.body?.errors));
 		process.exit(1);
 	}
 };
