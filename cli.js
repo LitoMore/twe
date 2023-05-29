@@ -20,33 +20,38 @@ const [command] = cli.input;
 
 switch (command) {
 	// Config tokens
-	case 'setup':
+	case 'setup': {
 		settings.renderSetupPropmt();
 		break;
+	}
 
 	// Config colors
-	case 'colors':
+	case 'colors': {
 		settings.renderColorsPrompt();
 		break;
+	}
 
 	// Fetch home-timeline
 	case undefined:
 	case 'h':
-	case 'home':
+	case 'home': {
 		timeline.homeTimeline(cli.flags);
 		break;
+	}
 
 	// Fetch user-timeline
-	case 'me':
+	case 'me': {
 		timeline.userTimeline(cli.flags);
 		break;
+	}
 
 	// Fetch mentions-timeline
 	case 'm':
 	case 'mention':
-	case 'mentions':
+	case 'mentions': {
 		timeline.mentionsTimeline(cli.flags);
 		break;
+	}
 
 	case 'get':
 	case 'post': {
