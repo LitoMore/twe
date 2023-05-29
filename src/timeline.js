@@ -77,7 +77,7 @@ const renderTimeline = (tl) => {
 			chalkPipe(colors.name)(user.name) +
 			chalkPipe(colors.text)(']') +
 			chalkPipe(colors.text)(' ') +
-			chalkPipe(colors.text)(line);
+			chalkPipe(colors.text)(line.trim());
 		console.log(statusText);
 	}
 };
