@@ -1,6 +1,6 @@
 {
 	"name": "twe",
-	"version": "0.3.1",
+	"version": "0.3.2",
 	"description": "CLI for Twitter",
 	"type": "module",
 	"bin": "cli.js",
