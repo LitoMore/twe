@@ -8,7 +8,7 @@ import * as spinner from './spinner.js';
 import {defaultSettings} from './settings.js';
 import {showInRepl} from './repl.js';
 
-const conf = new Conf();
+const conf = new Conf({projectName: 'twe'});
 const setup = conf.get('setup') || defaultSettings.setup;
 const colors = conf.get('colors') || defaultSettings.colors;
 const t = new T(setup);

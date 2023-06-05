@@ -19,7 +19,7 @@ export const defaultSettings = {
 	},
 };
 
-const conf = new Conf();
+const conf = new Conf({projectName: 'twe'});
 
 export const renderSetupPropmt = async () => {
 	const defaultSetup = conf.get('setup') || defaultSettings.setup;
