@@ -27,7 +27,7 @@ $ npm i -g twe
 
 ## Config
 
-1. Register a Twitter app with your Twitter developer account
+1. Register a [Twitter Elevated app](https://developer.twitter.com/en/portal/products/elevated) with your [Twitter developer account](http://developer.twitter.com)
 2. Give the app `Read and Write` permission and access to your account
 3. Run `twe setup` for setup your keys and tokens
 
